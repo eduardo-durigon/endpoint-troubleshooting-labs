@@ -98,19 +98,11 @@ The following screenshots document the main implementation milestones completed 
 
 ### 01 – Hyper-V Virtual Machine Configuration
 
-![Hyper-V VM Configuration](screenshots/01-hyperv-vm-configuration.png)
-
 ### 02 – Windows Server 2025 Installation
-
-![Windows Server Desktop](screenshots/02-windows-server-2025-desktop.png)
 
 ### 03 – Initial Server Configuration
 
-![Server Initial Configuration](screenshots/03-server-initial-configuration.png)
-
 ### 04 – Active Directory Domain Controller
-
-![Active Directory Domain Controller](screenshots/04-active-directory-domain-controller.png)
 
 ## Key Concepts Learned
 
