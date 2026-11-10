@@ -1,1 +1,143 @@
+# Lab 10 – Introduction to Active Directory
 
+## Overview
+
+This lab focuses on deploying and configuring a Windows Server 2025 environment with Active Directory Domain Services (AD DS).
+
+The objective is to gain practical experience with Active Directory administration, domain controllers, DNS, user and group management, and Windows domain authentication.
+
+The environment is being built using Hyper-V on a Windows 11 Pro host.
+
+This project is designed to develop practical skills relevant to Tier 1 IT Support / Help Desk and future Junior System Administrator roles.
+
+## Lab Objectives
+
+- Install and configure Windows Server 2025.
+- Deploy Active Directory Domain Services (AD DS).
+- Promote a Windows Server machine to a Domain Controller.
+- Create and configure an Active Directory domain.
+- Understand the relationship between Active Directory and DNS.
+- Create and manage Organizational Units (OUs).
+- Create and manage domain user accounts.
+- Configure security groups and group membership.
+- Join a Windows 11 client to an Active Directory domain.
+- Practise domain authentication and basic account administration.
+
+## Lab Environment
+
+| Component | Configuration |
+|---|---|
+| Hyper-V Host | EDU-LAB-CL02 |
+| Host OS | Windows 11 Pro |
+| Processor | AMD Ryzen AI 7 PRO 450 |
+| RAM | 32 GB |
+| Hypervisor | Hyper-V |
+| Domain Controller | EDU-DC01 |
+| Server OS | Windows Server 2025 Standard Evaluation |
+| VM Generation | Generation 2 |
+| VM Memory | 8 GB |
+| Virtual Processors | 4 |
+| Virtual Disk | 80 GB Dynamic VHDX |
+| Active Directory Domain | ad.lab |
+
+## Network Architecture
+
+A dedicated Hyper-V Internal Virtual Switch was created to provide an isolated environment for the Active Directory lab.
+
+**Virtual Switch:** `EDU-LAB-INT`
+
+**Network:** `192.168.10.0/24`
+
+| Device | Hostname | IP Address | Subnet Mask |
+|---|---|---|---|
+| Hyper-V Host | EDU-LAB-CL02 | 192.168.10.1 | 255.255.255.0 |
+| Domain Controller | EDU-DC01 | 192.168.10.10 | 255.255.255.0 |
+| Future Windows Client | EDU-CL03 | 192.168.10.20 | 255.255.255.0 |
+
+**Domain Controller Network Configuration**
+
+- Static IPv4 address: `192.168.10.10`
+- Preferred DNS server: `192.168.10.10`
+- Default gateway: Not configured
+- DHCP: Disabled
+
+The Domain Controller uses its own IP address for DNS services.
+
+The Internal Virtual Switch allows communication between the Hyper-V host and connected virtual machines. Internet access has not been configured for this isolated network.
+
+## Implementation and Completed Tasks
+
+### 1. Hyper-V Configuration
+
+- Created a dedicated Internal Virtual Switch named `EDU-LAB-INT`.
+- Configured the host's virtual network adapter with a static IPv4 address.
+- Established the network addressing plan for the lab.
+
+### 2. Windows Server Installation
+
+- Created a Generation 2 virtual machine named `EDU-DC01`.
+- Installed Windows Server 2025 Standard Evaluation with Desktop Experience.
+- Configured static IPv4 addressing.
+- Renamed the server to `EDU-DC01`.
+
+### 3. Active Directory Deployment
+
+- Installed the Active Directory Domain Services role.
+- Created a new Active Directory forest.
+- Configured the domain name `ad.lab`.
+- Enabled DNS Server and Global Catalog.
+- Completed the Domain Controller promotion process.
+- Successfully restarted and logged into the Domain Controller.
+- Verified domain membership through Server Manager.
+
+**Current Status:** EDU-DC01 is successfully operating as the first Domain Controller in the `ad.lab` forest.
+
+## Screenshots
+
+The following screenshots document the main implementation milestones completed so far.
+
+### 01 – Hyper-V Virtual Machine Configuration
+
+![Hyper-V VM Configuration](screenshots/01-hyperv-vm-configuration.png)
+
+### 02 – Windows Server 2025 Installation
+
+![Windows Server Desktop](screenshots/02-windows-server-2025-desktop.png)
+
+### 03 – Initial Server Configuration
+
+![Server Initial Configuration](screenshots/03-server-initial-configuration.png)
+
+### 04 – Active Directory Domain Controller
+
+![Active Directory Domain Controller](screenshots/04-active-directory-domain-controller.png)
+
+## Key Concepts Learned
+
+- The difference between installing the AD DS role and promoting a server to a Domain Controller.
+- The purpose of a Domain Controller within an Active Directory environment.
+- The relationship between Active Directory and DNS.
+- The role of a forest and domain in Active Directory.
+- The purpose of the Global Catalog.
+- The importance of static IP addressing for a Domain Controller.
+- The purpose of an isolated Hyper-V Internal Virtual Switch.
+
+## Next Steps
+
+The lab is ongoing. Planned activities include:
+
+1. Create an Organizational Unit (OU) structure.
+2. Create and manage test domain user accounts.
+3. Create security groups and configure group membership.
+4. Build a Windows 11 Pro client virtual machine.
+5. Join the Windows 11 client to the `ad.lab` domain.
+6. Test domain authentication.
+7. Practise basic Active Directory administration and troubleshooting.
+
+Additional screenshots and documentation will be added as these milestones are completed.
+
+---
+
+**Lab Status:** In Progress
+
+**Focus:** Practical IT Support / Help Desk and Junior System Administrator skills.
