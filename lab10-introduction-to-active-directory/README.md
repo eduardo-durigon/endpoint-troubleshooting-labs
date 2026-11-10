@@ -90,6 +90,30 @@ The Internal Virtual Switch allows communication between the Hyper-V host and co
 - Successfully restarted and logged into the Domain Controller.
 - Verified domain membership through Server Manager.
 
+### 4. ### Active Directory User and Group Management
+
+- Created a structured Organizational Unit (OU) hierarchy under `Company`:
+  - `Users`
+  - `Computers`
+  - `Groups`
+  - `Departments`
+- Created domain user accounts:
+  - John Smith (`jsmith`)
+  - Sarah Johnson (`sjohnson`)
+- Created Global Security Groups:
+  - `IT Support`
+  - `HR`
+- Added users to their corresponding security groups:
+  - John Smith → IT Support
+  - Sarah Johnson → HR
+- Inspected user account properties and group memberships using Active Directory Users and Computers (ADUC).
+- Practised common account administration tasks:
+  - Password resets
+  - Enabling and disabling user accounts
+  - Reviewing account lockout settings
+  - Checking account expiration and logon restrictions
+  - Reviewing password-change requirements at next logon
+
 **Current Status:** EDU-DC01 is successfully operating as the first Domain Controller in the `ad.lab` forest.
 
 ## Screenshots
