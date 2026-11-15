@@ -4,7 +4,7 @@
 
 This lab focuses on deploying and configuring a Windows Server 2025 environment with Active Directory Domain Services (AD DS).
 
-The objective is to gain practical experience with Active Directory administration, Domain Controllers, DNS, Organizational Units, user and group management, and Windows domain authentication.
+The objective is to gain practical experience with Active Directory administration, Domain Controllers, DNS, Organizational Units, user and group management, Windows domain authentication, shared network resources, and group-based access permissions.
 
 The environment is being built using Hyper-V on a Windows 11 Pro host.
 
@@ -23,6 +23,10 @@ This project is designed to develop practical skills relevant to Tier 1 IT Suppo
 - Join a Windows 11 client to an Active Directory domain.
 - Practise domain authentication and basic account administration.
 - Troubleshoot network connectivity and DNS resolution between domain machines.
+- Configure shared network folders.
+- Understand the difference between share permissions and NTFS permissions.
+- Apply group-based access permissions to shared resources.
+- Test access to network resources using different domain user accounts.
 
 ## Lab Environment
 
@@ -139,7 +143,7 @@ Practised common account administration tasks:
 - Reviewing password-change requirements at next logon.
 - Inspecting user group membership.
 
-### 5. Windows 11 Client Deployment
+### 5. Windows 11 Client Deployment and Domain Joining
 
 - Created a Windows 11 Pro client virtual machine named `EDU-CL03`.
 - Connected the client to the `EDU-LAB-INT` Internal Virtual Switch.
@@ -147,8 +151,24 @@ Practised common account administration tasks:
 - Configured the preferred DNS server to point to the Domain Controller (`192.168.10.10`).
 - Started both virtual machines simultaneously.
 - Successfully tested network connectivity between EDU-CL03 and EDU-DC01 using ICMP ping.
+- Successfully joined the Windows 11 client to the `ad.lab` domain.
+- Confirmed the successful domain join.
+- Verified domain membership using PowerShell:
 
-The client is communicating with the Domain Controller over the isolated virtual network. Domain joining is still pending.
+```powershell
+Get-CimInstance Win32_ComputerSystem | Select-Object Name, Domain, PartOfDomain
+```
+
+**Domain Authentication Testing**
+
+Successfully tested domain authentication on EDU-CL03 using:
+
+- `AD\jsmith`
+- `AD\sjohnson`
+
+Both domain accounts successfully logged into the Windows 11 client.
+
+Practised changing the initial password when prompted during the first domain login.
 
 ### 6. Host Memory Investigation and Hyper-V Optimization
 
@@ -211,12 +231,97 @@ nslookup ad.lab 192.168.10.10
 
 The DNS server was now identified by its hostname instead of appearing as `Unknown`, and the domain name resolved successfully.
 
+Additional DNS verification was performed from the Windows 11 client, including the Active Directory LDAP service record:
+
+```powershell
+Resolve-DnsName _ldap._tcp.dc._msdcs.ad.lab
+```
+
+The record successfully returned `EDU-DC01.ad.lab` on port `389`.
+
 **Key Concepts Learned**
 
 - Forward DNS resolution: hostname to IP address (A record).
 - Reverse DNS resolution: IP address to hostname (PTR record).
 - DNS troubleshooting requires checking both forward and reverse resolution.
 - `nslookup` is a useful command for testing DNS resolution and identifying DNS server response issues.
+- Active Directory relies on DNS service records to locate Domain Controllers and related services.
+
+### 8. Shared Network Folders and Group-Based Permissions
+
+Created a shared folder structure on the Domain Controller to practise managing network resources and controlling access through Active Directory security groups.
+
+**Folder Structure**
+
+```text
+C:\Shares
+│
+├── IT
+│
+└── HR
+```
+
+**Network Share Configuration**
+
+- Created the root folder `C:\Shares`.
+- Created the `IT` and `HR` departmental subfolders.
+- Shared the root folder using the share name `Shares`.
+- Configured share permissions for the `Domain Users` group with Read and Change permissions.
+- Left Full Control unchecked.
+- Used NTFS permissions to manage access to the individual departmental folders.
+
+**IT Folder – NTFS Permissions**
+
+Configured the IT folder's NTFS permissions:
+
+- Disabled inheritance on the IT folder.
+- Converted inherited permissions into explicit permissions.
+- Added the `IT Support` security group.
+- Granted the group Modify permissions.
+- Removed the broad `AD\Users` permission entries from the IT folder.
+- Preserved the existing SYSTEM and Administrators entries.
+
+**Practical Access Testing**
+
+Tested access from the Windows 11 client (`EDU-CL03`) while logged in as John Smith (`AD\jsmith`).
+
+Successfully accessed:
+
+```text
+\\EDU-DC01\Shares\IT
+```
+
+Created a test file:
+
+```text
+IT-Access-Test.txt
+```
+
+The file was created successfully, confirming that John could access and modify the IT shared folder.
+
+**HR Folder – Initial Access Test**
+
+Also tested access to:
+
+```text
+\\EDU-DC01\Shares\HR
+```
+
+John was able to open the HR folder and create a test file:
+
+```text
+HR-Access-Test.txt
+```
+
+This revealed that the HR folder was still inheriting permissions that allowed broader access.
+
+**Current Finding**
+
+The IT folder's group-based Modify permission was successfully tested.
+
+However, departmental access separation is not yet complete. The HR folder still requires its own NTFS permission configuration so that access can be restricted to the HR security group.
+
+This exercise demonstrated why permissions must be verified through practical testing rather than assumed to be correct based solely on configuration.
 
 ## Screenshots
 
@@ -232,11 +337,15 @@ The following screenshots document the main implementation milestones completed 
 
 ### 05 – Active Directory Users and Security Groups
 
-### 06 – Windows 11 Client Virtual Machine
+### 06 – Windows 11 Client Virtual Machine and Domain Join
 
 ### 07 – Host Memory Investigation and BIOS Configuration
 
 ### 08 – Network Connectivity and DNS Troubleshooting
+
+### 09 – Active Directory DNS Verification
+
+### 10 – Shared Network Folders and NTFS Permissions
 
 ## Key Concepts Learned
 
@@ -249,8 +358,10 @@ The following screenshots document the main implementation milestones completed 
 - The purpose of an isolated Hyper-V Internal Virtual Switch.
 - The role of Organizational Units in organizing Active Directory objects.
 - The difference between user accounts, Organizational Units, and security groups.
-- How Global Security Groups organize users for future resource access management.
+- How Global Security Groups organize users for resource access management.
 - How administrators manage user account settings and password resets.
+- How to join a Windows client to an Active Directory domain.
+- How domain authentication works on a domain-joined Windows client.
 - How integrated graphics can reserve system RAM.
 - The purpose of UMA Framebuffer Size in BIOS.
 - How to investigate memory utilization when running multiple virtual machines.
@@ -260,18 +371,27 @@ The following screenshots document the main implementation milestones completed 
 - How reverse DNS resolution maps IP addresses to hostnames using PTR records.
 - The purpose of reverse lookup zones in DNS.
 - How to use `nslookup`, `Resolve-DnsName`, and `dcdiag` to investigate DNS issues.
-- How to troubleshoot DNS services and network communication between domain machines.
+- How Active Directory uses DNS SRV records to locate services.
+- The difference between share permissions and NTFS permissions.
+- How to configure shared network folders in Windows Server.
+- How to apply NTFS permissions to Active Directory security groups.
+- The purpose of Modify permissions when managing shared resources.
+- How permission inheritance affects access to files and folders.
+- How to test network resource access using domain user accounts.
+- Why practical access testing is important when troubleshooting permissions.
 
 ## Next Steps
 
 The lab is ongoing. Planned activities include:
 
-1. Verify DNS resolution from the Windows 11 client.
-2. Join the Windows 11 client to the `ad.lab` domain.
-3. Test domain authentication using the John Smith and Sarah Johnson accounts.
-4. Practise basic domain login troubleshooting.
-5. Configure a shared resource and explore group-based permissions.
-6. Practise additional Active Directory administration tasks.
+1. Configure NTFS permissions on the HR folder.
+2. Grant the HR security group the appropriate permissions.
+3. Remove unintended broad access to the HR folder.
+4. Test HR folder access using Sarah Johnson (`AD\sjohnson`).
+5. Verify that John Smith can access IT resources but cannot access HR resources.
+6. Verify that Sarah Johnson can access HR resources but cannot access IT resources.
+7. Practise additional Active Directory administration and troubleshooting tasks.
+8. Document further findings and implementation milestones.
 
 Additional screenshots and documentation will be added as these milestones are completed.
 
