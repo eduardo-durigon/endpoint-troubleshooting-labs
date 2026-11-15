@@ -148,7 +148,7 @@ Practised common account administration tasks:
 - Started both virtual machines simultaneously.
 - Successfully tested network connectivity between EDU-CL03 and EDU-DC01 using ICMP ping.
 
-The client is communicating with the Domain Controller over the isolated virtual network. Domain joining is still pending DNS troubleshooting.
+The client is communicating with the Domain Controller over the isolated virtual network. Domain joining is still pending.
 
 ### 6. Host Memory Investigation and Hyper-V Optimization
 
@@ -170,40 +170,53 @@ Changed the setting to 2 GB and restarted Windows.
 
 This investigation provided practical experience with integrated graphics memory allocation, hardware-reserved RAM, BIOS configuration, and virtualization resource management.
 
-### 7. DNS Troubleshooting
+### 7. DNS Troubleshooting – Forward and Reverse Lookup
 
-Initial DNS testing revealed that EDU-CL03 could communicate with EDU-DC01 using ICMP ping but was unable to resolve the Active Directory domain.
+During the initial DNS troubleshooting, `nslookup` repeatedly timed out when querying the Domain Controller, even though other DNS tests were successful.
 
-The following troubleshooting steps were performed:
+**Initial Findings**
 
-**DNS Server Verification**
+- `Resolve-DnsName` successfully resolved `ad.lab` to `192.168.10.10`.
+- The Active Directory LDAP SRV record resolved successfully.
+- `dcdiag /test:dns` passed.
+- `nslookup` displayed the DNS server as `Unknown` and reported timeouts.
+- `nslookup -vc` successfully completed the query over TCP.
 
-- Verified that the DNS Server role was installed on EDU-DC01 using `Get-WindowsFeature DNS`.
-- Confirmed that the DNS service was running using `Get-Service -Name DNS`.
-- Successfully resolved `ad.lab` locally on the Domain Controller using `nslookup`.
+**Investigation and Resolution**
 
-**Client DNS Testing**
+Further investigation revealed that no reverse lookup zone had been configured.
 
-- Verified the client network configuration using `ipconfig /all`.
-- Confirmed that the preferred DNS server was configured as `192.168.10.10`.
-- Attempted DNS resolution from EDU-CL03 using `nslookup ad.lab`.
-- Tested TCP port 53 connectivity using `Test-NetConnection`.
-- Confirmed that the TCP connection to port 53 succeeded.
+A new IPv4 Reverse Lookup Zone was created in DNS Manager:
 
-**Outstanding Issue**
+| Setting | Configuration |
+|---|---|
+| Network ID | `192.168.10` |
+| Reverse lookup zone | `10.10.168.192.in-addr.arpa` |
+| Dynamic updates | Secure only |
 
-DNS queries originating from EDU-CL03 continued to time out, despite successful local DNS resolution on EDU-DC01.
+A Pointer (PTR) record was then created:
 
-Further investigation is required to determine why remote DNS queries are not receiving responses.
+| Setting | Value |
+|---|---|
+| Host IP address | `192.168.10.10` |
+| Host name | `EDU-DC01.ad.lab` |
 
-Planned troubleshooting includes:
+**Verification**
 
-- Checking DNS UDP port 53 availability.
-- Inspecting DNS server listening interfaces.
-- Reviewing Windows Defender Firewall DNS inbound rules.
-- Testing DNS resolution again from the Windows 11 client.
+After creating the reverse lookup zone and PTR record, the original `nslookup` command completed successfully:
 
-No DNS configuration or firewall changes have been made as part of this investigation yet.
+```powershell
+nslookup ad.lab 192.168.10.10
+```
+
+The DNS server was now identified by its hostname instead of appearing as `Unknown`, and the domain name resolved successfully.
+
+**Key Concepts Learned**
+
+- Forward DNS resolution: hostname to IP address (A record).
+- Reverse DNS resolution: IP address to hostname (PTR record).
+- DNS troubleshooting requires checking both forward and reverse resolution.
+- `nslookup` is a useful command for testing DNS resolution and identifying DNS server response issues.
 
 ## Screenshots
 
@@ -243,19 +256,22 @@ The following screenshots document the main implementation milestones completed 
 - How to investigate memory utilization when running multiple virtual machines.
 - The difference between ICMP connectivity, TCP connectivity, and DNS resolution.
 - The importance of UDP port 53 for standard DNS queries.
+- How forward DNS resolution maps hostnames to IP addresses using A records.
+- How reverse DNS resolution maps IP addresses to hostnames using PTR records.
+- The purpose of reverse lookup zones in DNS.
+- How to use `nslookup`, `Resolve-DnsName`, and `dcdiag` to investigate DNS issues.
 - How to troubleshoot DNS services and network communication between domain machines.
 
 ## Next Steps
 
 The lab is ongoing. Planned activities include:
 
-1. Continue troubleshooting DNS communication between EDU-CL03 and EDU-DC01.
-2. Verify DNS resolution from the Windows 11 client.
-3. Join the Windows 11 client to the `ad.lab` domain.
-4. Test domain authentication using the John Smith and Sarah Johnson accounts.
-5. Practise basic domain login troubleshooting.
-6. Configure a shared resource and explore group-based permissions.
-7. Practise additional Active Directory administration tasks.
+1. Verify DNS resolution from the Windows 11 client.
+2. Join the Windows 11 client to the `ad.lab` domain.
+3. Test domain authentication using the John Smith and Sarah Johnson accounts.
+4. Practise basic domain login troubleshooting.
+5. Configure a shared resource and explore group-based permissions.
+6. Practise additional Active Directory administration tasks.
 
 Additional screenshots and documentation will be added as these milestones are completed.
 
