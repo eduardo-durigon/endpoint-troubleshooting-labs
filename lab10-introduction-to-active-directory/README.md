@@ -503,16 +503,18 @@ Throughout this lab, the following concepts were explored and practised:
 
 The following screenshots provide visual evidence of the lab configuration, implementation and testing.
 
-1. **Hyper-V Virtual Switch and Network Configuration** – The `EDU-LAB-INT` Internal Virtual Switch and its network configuration.
-2. **Windows Server 2025 Virtual Machine** – The `EDU-DC01` virtual machine configuration in Hyper-V.
-3. **Active Directory Domain Deployment** – The `ad.lab` domain and Domain Controller configuration.
-4. **Organizational Units, Users and Security Groups** – The `Company` OU structure, domain users and departmental security groups.
-5. **Windows 11 Domain Joining** – Evidence that `EDU-CL03` successfully joined the `ad.lab` domain.
-6. **DNS Configuration and Verification** – Reverse lookup zone, PTR record and successful DNS verification.
-7. **Shared Folders and NTFS Permissions** – The IT and HR folder structure and their group-based permissions.
-8. **Departmental Access Testing** – Successful access to each user's own departmental folder and denied access to the other department's folder.
-9. **Dedicated Administrator Account** – The `lab.admin` account showing membership in `Domain Users` and `Domain Admins`.
-10. **UAC Administrative Elevation** – The administrator credential prompt for a standard user and successful elevation verified with `whoami`.
+1. **Hyper-V Virtual Switch and Network Configuration**
+2. **Windows Server 2025 Virtual Machine**
+3. **Active Directory Domain Deployment**
+4. **Organizational Units, Users and Security Groups**
+5. **Windows 11 Domain Joining**
+6. **DNS Configuration and Verification**
+7. **Shared Folders and NTFS Permissions**
+8. **Departmental Access Testing**
+9.  **Active Directory DNS Verification**
+10. **Shared Network Folders and NTFS Permissions**
+11. **Dedicated Administrator Account**
+12. **UAC Administrative Elevation**
 
 # Future Learning
 
