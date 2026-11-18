@@ -274,16 +274,40 @@ C:\Shares
 
 Configured the IT folder's NTFS permissions:
 
-- Disabled inheritance on the IT folder.
+- Disabled permission inheritance.
 - Converted inherited permissions into explicit permissions.
-- Added the `IT Support` security group.
+- Added the `IT Support` Global Security Group.
 - Granted the group Modify permissions.
-- Removed the broad `AD\Users` permission entries from the IT folder.
-- Preserved the existing SYSTEM and Administrators entries.
+- Configured permissions to apply to the folder, subfolders and files.
+- Removed the broad `AD\Users` permission entries.
+- Preserved SYSTEM and Administrators permissions.
+
+**HR Folder – NTFS Permissions**
+
+Configured the HR folder independently to restrict access to the HR department:
+
+- Disabled permission inheritance.
+- Converted inherited permissions into explicit permissions.
+- Inspected the inherited `AD\Users` permission entries.
+- Identified broad read permissions and permissions allowing users to create files and folders.
+- Removed both broad `AD\Users` permission entries.
+- Added the `HR` Global Security Group.
+- Granted the group Modify permissions.
+- Configured permissions to apply to the folder, subfolders and files.
+- Preserved SYSTEM, Administrators and CREATOR OWNER entries.
 
 **Practical Access Testing**
 
-Tested access from the Windows 11 client (`EDU-CL03`) while logged in as John Smith (`AD\jsmith`).
+Tested departmental access from the Windows 11 client (`EDU-CL03`) using both domain accounts.
+
+| User | Department | IT Folder | HR Folder |
+|---|---|---|---|
+| John Smith (`AD\jsmith`) | IT Support | Allowed | Denied |
+| Sarah Johnson (`AD\sjohnson`) | HR | Denied | Allowed |
+
+**IT Access Verification**
+
+Logged into EDU-CL03 as John Smith (`AD\jsmith`).
 
 Successfully accessed:
 
@@ -291,112 +315,95 @@ Successfully accessed:
 \\EDU-DC01\Shares\IT
 ```
 
-Created a test file:
+Created and accessed the test file:
 
 ```text
 IT-Access-Test.txt
 ```
 
-The file was created successfully, confirming that John could access and modify the IT shared folder.
+John successfully retained access to the IT folder after the HR permission changes.
 
-**HR Folder – Initial Access Test**
+**HR Access Verification**
 
-Also tested access to:
+Logged into EDU-CL03 as Sarah Johnson (`AD\sjohnson`).
+
+Successfully accessed:
 
 ```text
 \\EDU-DC01\Shares\HR
 ```
 
-John was able to open the HR folder and create a test file:
+Created and opened the test file:
 
 ```text
-HR-Access-Test.txt
+HR-Sarah-Access-Test.txt
 ```
 
-This revealed that the HR folder was still inheriting permissions that allowed broader access.
+Sarah successfully retained access to the HR folder after the permission changes.
 
-**Current Finding**
+**Departmental Access Restriction Testing**
 
-The IT folder's group-based Modify permission was successfully tested.
+Additional tests confirmed that departmental access was correctly restricted:
 
-However, departmental access separation is not yet complete. The HR folder still requires its own NTFS permission configuration so that access can be restricted to the HR security group.
+- Sarah Johnson received a permission error when attempting to access the IT folder.
+- John Smith received a permission error when attempting to access the HR folder.
 
-This exercise demonstrated why permissions must be verified through practical testing rather than assumed to be correct based solely on configuration.
+All four departmental access tests produced the expected results.
 
-## Screenshots
+**Key Concepts Learned**
 
-The following screenshots document the main implementation milestones completed so far.
-
-### 01 – Hyper-V Virtual Machine Configuration
-
-### 02 – Windows Server 2025 Installation
-
-### 03 – Initial Server Configuration
-
-### 04 – Active Directory Domain Controller
-
-### 05 – Active Directory Users and Security Groups
-
-### 06 – Windows 11 Client Virtual Machine and Domain Join
-
-### 07 – Host Memory Investigation and BIOS Configuration
-
-### 08 – Network Connectivity and DNS Troubleshooting
-
-### 09 – Active Directory DNS Verification
-
-### 10 – Shared Network Folders and NTFS Permissions
-
-## Key Concepts Learned
-
-- The difference between installing the AD DS role and promoting a server to a Domain Controller.
-- The purpose of a Domain Controller within an Active Directory environment.
-- The relationship between Active Directory and DNS.
-- The purpose of a forest and domain in Active Directory.
-- The role of the Global Catalog.
-- The importance of static IP addressing for a Domain Controller.
-- The purpose of an isolated Hyper-V Internal Virtual Switch.
-- The role of Organizational Units in organizing Active Directory objects.
-- The difference between user accounts, Organizational Units, and security groups.
-- How Global Security Groups organize users for resource access management.
-- How administrators manage user account settings and password resets.
-- How to join a Windows client to an Active Directory domain.
-- How domain authentication works on a domain-joined Windows client.
-- How integrated graphics can reserve system RAM.
-- The purpose of UMA Framebuffer Size in BIOS.
-- How to investigate memory utilization when running multiple virtual machines.
-- The difference between ICMP connectivity, TCP connectivity, and DNS resolution.
-- The importance of UDP port 53 for standard DNS queries.
-- How forward DNS resolution maps hostnames to IP addresses using A records.
-- How reverse DNS resolution maps IP addresses to hostnames using PTR records.
-- The purpose of reverse lookup zones in DNS.
-- How to use `nslookup`, `Resolve-DnsName`, and `dcdiag` to investigate DNS issues.
-- How Active Directory uses DNS SRV records to locate services.
 - The difference between share permissions and NTFS permissions.
 - How to configure shared network folders in Windows Server.
 - How to apply NTFS permissions to Active Directory security groups.
 - The purpose of Modify permissions when managing shared resources.
 - How permission inheritance affects access to files and folders.
-- How to test network resource access using domain user accounts.
+- How to disable inheritance and convert inherited permissions into explicit permissions.
+- Why broad permissions such as `AD\Users` can create unintended access.
+- How to use security groups to manage departmental resource access.
+- How to apply the principle of least privilege.
+- How to test network resource access using different domain user accounts.
 - Why practical access testing is important when troubleshooting permissions.
+
+**Result**
+
+Successfully implemented and verified departmental access control using Active Directory security groups and NTFS permissions.
+
+John Smith can access and modify IT resources but cannot access HR resources.
+
+Sarah Johnson can access and modify HR resources but cannot access IT resources.
+
+The departmental access configuration was successfully tested from the domain-joined Windows 11 client.
+
+---
+
+## Additional Key Concepts Learned
+
+Add these bullets to the existing `Key Concepts Learned` section:
+
+- How to configure departmental folder permissions independently of their parent folder.
+- How to troubleshoot unintended access caused by inherited NTFS permissions.
+- How to distinguish permission configuration from actual permission verification.
+- How to use UNC paths to access shared network resources.
+- The purpose of User Account Control (UAC) when performing administrative tasks.
+- Why standard domain user accounts should not automatically have administrative privileges.
 
 ## Next Steps
 
 The lab is ongoing. Planned activities include:
 
-1. Configure NTFS permissions on the HR folder.
-2. Grant the HR security group the appropriate permissions.
-3. Remove unintended broad access to the HR folder.
-4. Test HR folder access using Sarah Johnson (`AD\sjohnson`).
-5. Verify that John Smith can access IT resources but cannot access HR resources.
-6. Verify that Sarah Johnson can access HR resources but cannot access IT resources.
-7. Practise additional Active Directory administration and troubleshooting tasks.
-8. Document further findings and implementation milestones.
+1. Practise additional Active Directory administration and troubleshooting tasks.
+2. Create a dedicated administrative account for lab administration.
+3. Understand the differences between standard domain users, local administrators and Domain Admins.
+4. Practise UAC elevation using an authorized administrator account.
+5. Explore additional user, group and computer administration tasks.
+6. Document further findings and implementation milestones.
 
 Additional screenshots and documentation will be added as these milestones are completed.
 
 ---
 
 **Lab Status:** In Progress
+
+**Completed Milestone:** Shared Network Folders and Departmental Group-Based Permissions.
 
 **Focus:** Practical IT Support / Help Desk and Junior System Administrator skills.
