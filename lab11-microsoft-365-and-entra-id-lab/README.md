@@ -62,14 +62,14 @@ The project builds upon the traditional Active Directory experience developed in
 
 **Status: Pending**
 
-- [ ] Investigate Microsoft 365 Business subscriptions.
-- [ ] Compare Microsoft Entra ID licensing.
-- [ ] Investigate Microsoft 365 trials.
-- [ ] Check Microsoft 365 Developer Program eligibility.
-- [ ] Compare available sandbox options.
-- [ ] Select a suitable business test environment.
-- [ ] Configure initial administrative access.
-- [ ] Document the business tenant architecture.
+- [X] Investigate Microsoft 365 Business subscriptions.
+- [X] Compare Microsoft Entra ID licensing.
+- [X] Investigate Microsoft 365 trials.
+- [X] Check Microsoft 365 Developer Program eligibility.
+- [X] Compare available sandbox options.
+- [X] Select a suitable business test environment.
+- [X] Configure initial administrative access.
+- [X] Document the business tenant architecture.
 
 ### Phase 3 – Microsoft Entra ID Administration
 
