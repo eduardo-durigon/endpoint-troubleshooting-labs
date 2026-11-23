@@ -75,18 +75,18 @@ The project builds upon the traditional Active Directory experience developed in
 
 **Status: Pending**
 
-- [ ] Understand tenants and cloud identities.
-- [ ] Understand the differences between Entra ID and traditional Active Directory.
-- [ ] Create and manage cloud users.
-- [ ] Disable, delete and restore accounts.
-- [ ] Reset passwords.
-- [ ] Manage user properties.
-- [ ] Create security groups.
-- [ ] Manage group membership.
-- [ ] Understand administrative roles.
-- [ ] Configure multifactor authentication (MFA).
-- [ ] Explore authentication methods.
-- [ ] Explore Conditional Access where licensing permits.
+- [X] Understand tenants and cloud identities.
+- [X] Understand the differences between Entra ID and traditional Active Directory.
+- [X] Create and manage cloud users.
+- [X] Disable, delete and restore accounts.
+- [X] Reset passwords.
+- [X] Manage user properties.
+- [X] Create security groups.
+- [X] Manage group membership.
+- [X] Understand administrative roles.
+- [X] Configure multifactor authentication (MFA).
+- [X] Explore authentication methods.
+- [X] Explore Conditional Access where licensing permits.
 
 ### Phase 4 – Microsoft 365 Administration and Services
 
