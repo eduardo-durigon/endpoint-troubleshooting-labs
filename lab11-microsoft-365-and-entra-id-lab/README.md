@@ -173,8 +173,8 @@ This separation keeps the current project focused on building and administering 
 | Phase | Description | Status |
 |---|---|---|
 | Phase 1 | Microsoft 365 Personal Environment | Completed |
-| Phase 2 | Microsoft 365 Business Environment | Not Started |
-| Phase 3 | Microsoft Entra ID Administration | Not Started |
+| Phase 2 | Microsoft 365 Business Environment | Completed |
+| Phase 3 | Microsoft Entra ID Administration | Completed |
 | Phase 4 | Microsoft 365 Administration and Services | Not Started |
 
 ## Reflection
