@@ -25,7 +25,7 @@ The environment uses a dedicated Microsoft 365 Business Premium tenant, separate
 
 - Understand Microsoft 365 tenant administration.
 - Explore the Microsoft Entra admin center.
-- Understand cloud-only identities.
+- Understand tenants and cloud-only identities.
 - Create and manage cloud user accounts.
 - Perform password resets and modify user properties.
 - Create and manage security groups.
@@ -33,6 +33,7 @@ The environment uses a dedicated Microsoft 365 Business Premium tenant, separate
 - Explore authentication methods and MFA configuration.
 - Understand Conditional Access policies and their purpose.
 - Compare Microsoft Entra ID with on-premises Active Directory.
+- Understand cloud-only, on-premises, and hybrid identity models.
 - Develop practical cloud identity administration skills.
 
 ## Structure
@@ -69,8 +70,14 @@ Explored cloud identity management and security administration.
 **Exercise 01 – Exploring the Microsoft Entra Admin Center**
 
 - Explored the Microsoft Entra administration interface.
-- Identified key areas related to users, groups, roles, authentication, and security.
+- Located the main administration sections:
+  - Users
+  - Groups
+  - Roles and administrators
+  - Authentication methods
+  - Conditional Access
 - Practised navigating the administration portal.
+- Completed a practical knowledge check matching common Help Desk tasks to the appropriate administration sections.
 
 **Exercise 02 – Understanding Tenants and Cloud Identities**
 
@@ -78,6 +85,9 @@ Explored cloud identity management and security administration.
 - Understood the purpose of the organizational tenant and its initial domain.
 - Distinguished cloud-only identities from on-premises Active Directory accounts.
 - Confirmed that the cloud identities created in this lab are independent of the accounts in Lab 10.
+- Learned the difference between Member and Guest accounts.
+- Explored the concept of hybrid identity and directory synchronization.
+- Completed a practical knowledge check covering tenant isolation, cloud-only identities, and hybrid identity.
 
 **Exercise 03 – Creating and Managing Cloud Users**
 
@@ -172,16 +182,16 @@ No authentication or security settings were modified during this exercise.
 
 **Exercise 08 – Conditional Access**
 
-Explored the Conditional Access administration area and inspected two existing policy descriptions.
+Explored the Conditional Access administration area and identified two existing policy descriptions in the policy list.
 
-Identified the following configurations:
+Identified the following policy descriptions:
 
 1. **MFA outside the company network**
-   - Applies to all users.
+   - Described as applying to all users.
    - Requires MFA when users are outside the company's trusted network locations.
 
 2. **Device requirements for Managers**
-   - Applies to users in the Managers group.
+   - Described as applying to users in the Managers group.
    - Requires an Intune-compliant or domain-joined device.
 
 Key concepts:
@@ -193,6 +203,8 @@ Key concepts:
 - Access controls.
 
 Also confirmed that Security Defaults was enabled.
+
+The policy details could not be opened, so their individual assignments, grant controls, and enabled status were not independently verified.
 
 No Conditional Access policies were created, edited, or enabled during this exercise.
 
@@ -209,6 +221,7 @@ Topics explored:
 - Password resets and account administration.
 - Domain-joined and Entra-joined devices.
 - Cloud-only, on-premises, and hybrid identity models.
+- The impact of internet connectivity on cloud and on-premises authentication.
 
 Completed a practical knowledge check covering common Help Desk scenarios.
 
@@ -224,6 +237,8 @@ Completed a practical knowledge check covering common Help Desk scenarios.
 - Authentication methods and MFA configuration inspection.
 - Security Defaults inspection.
 - Conditional Access policy inspection.
+- Understanding tenant isolation and cloud-only identities.
+- Understanding Member and Guest accounts.
 - Understanding cloud-only versus hybrid identities.
 - Comparing Microsoft Entra ID with on-premises Active Directory.
 
@@ -231,6 +246,8 @@ Completed a practical knowledge check covering common Help Desk scenarios.
 
 - [x] Phase 01 – Personal Microsoft 365 Environment
 - [x] Phase 02 – Business Microsoft 365 Environment
+- [x] Exercise 01 – Exploring the Microsoft Entra Admin Center
+- [x] Exercise 02 – Understanding Tenants and Cloud Identities
 - [x] Exercise 03 – Creating and Managing Cloud Users
 - [x] Exercise 04 – Password Reset and User Properties
 - [x] Exercise 05 – Creating and Managing Security Groups
@@ -238,8 +255,6 @@ Completed a practical knowledge check covering common Help Desk scenarios.
 - [x] Exercise 07 – Multi-Factor Authentication (MFA)
 - [x] Exercise 08 – Conditional Access
 - [x] Exercise 09 – Comparing Entra ID with On-Premises Active Directory
-- [ ] Exercise 01 – Final documentation and verification
-- [ ] Exercise 02 – Final documentation and verification
 
 ## Final Goal
 
