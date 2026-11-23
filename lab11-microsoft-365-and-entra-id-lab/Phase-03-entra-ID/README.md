@@ -1,4 +1,4 @@
-# Lab 11 – Microsoft Entra ID Administration
+# Phase 03 - Lab 11 – Microsoft Entra ID Administration
 
 ## Overview
 
